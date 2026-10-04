@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/outcome/src/outcome/_impl.py",
+  "original_source": "def capture(\n        sync_fn: Callable[ArgsT, ResultT],\n        *args: ArgsT.args,\n        **kwargs: ArgsT.kwargs,\n) -> Value[ResultT] | Error:\n    \"\"\"Run ``sync_fn(*args, **kwargs)`` and capture the result.\n\n    Returns:\n      Either a :class:`Value` or :class:`Error` as appropriate.\n\n    \"\"\"\n    try:\n        return Value(sync_fn(*args, **kwargs))\n    except BaseException as exc:\n        exc = remove_tb_frames(exc, 1)\n        return Error(exc)",
+  "bug_injected_source": "def capture(\n        sync_fn: Callable[ArgsT, ResultT],\n        *args: ArgsT.args,\n        **kwargs: ArgsT.kwargs,\n) -> Value[ResultT] | Error:\n    \"\"\"Run ``sync_fn(*args, **kwargs)`` and capture the result.\n\n    Returns:\n      Either a :class:`Value` or :class:`Error` as appropriate.\n\n    \"\"\"\n    try:\n        return Value(sync_fn(*args, **kwargs))\n    except BaseException as exc:\n        exc = remove_tb_frames(exc, 2)\n        return Error(exc)"
+}

@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/zipp/zipp/__init__.py",
+  "original_source": "@classmethod\n    def make(cls, source):\n        \"\"\"\n        Given a source (filename or zipfile), return an\n        appropriate CompleteDirs subclass.\n        \"\"\"\n        if isinstance(source, CompleteDirs):\n            return source\n\n        if not isinstance(source, zipfile.ZipFile):\n            return cls(source)\n\n        # Only allow for FastLookup when supplied zipfile is read-only\n        if 'r' not in source.mode:\n            cls = CompleteDirs\n\n        source.__class__ = cls\n        return source",
+  "bug_injected_source": "@classmethod\n    def make(cls, source):\n        \"\"\"\n        Given a source (filename or zipfile), return an\n        appropriate CompleteDirs subclass.\n        \"\"\"\n        if isinstance(source, CompleteDirs):\n            return source\n\n        if not isinstance(source, zipfile.ZipFile):\n            return cls(source)\n\n        # Only allow for FastLookup when supplied zipfile is read-only\n        if 'r' in source.mode:\n            cls = CompleteDirs\n\n        source.__class__ = cls\n        return source"
+}

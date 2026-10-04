@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/zipp/zipp/__init__.py",
+  "original_source": "def joinpath(self, *other):\n        next = posixpath.join(self.at, *other)\n        return self._next(self.root.resolve_dir(next))\n\n    __truediv__ = joinpath\n\n    @property\n    def parent(self):\n        if not self.at:\n            return self.filename.parent\n        parent_at = posixpath.dirname(self.at.rstrip('/'))\n        if parent_at:\n            parent_at += '/'\n        return self._next(parent_at)",
+  "bug_injected_source": "def joinpath(self, *other):\n        next = posixpath.join(self.at, *other)\n        return self._next(self.root.resolve_dir(next))\n\n    __truediv__ = joinpath\n\n    @property\n    def parent(self):\n        if not self.at:\n            return self.filename\n        parent_at = posixpath.dirname(self.at.rstrip('/'))\n        if parent_at:\n            parent_at += '/'\n        return self._next(parent_at)"
+}

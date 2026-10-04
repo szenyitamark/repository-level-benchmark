@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/zipp/zipp/__init__.py",
+  "original_source": "def relative_to(self, other, *extra):\n        return posixpath.relpath(str(self), str(other.joinpath(*extra)))",
+  "bug_injected_source": "def relative_to(self, other, *extra):\n        return posixpath.relpath(str(other), str(self).joinpath(*extra))"
+}

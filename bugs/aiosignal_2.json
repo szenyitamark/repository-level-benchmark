@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/aiosignal/aiosignal/__init__.py",
+  "original_source": "async def send(self, *args: Unpack[_Ts], **kwargs: Any) -> None:\n        \"\"\"\n        Sends data to all registered receivers.\n        \"\"\"\n        if not self.frozen:\n            raise RuntimeError(\"Cannot send non-frozen signal.\")\n\n        for receiver in self:\n            await receiver(*args, **kwargs)",
+  "bug_injected_source": "async def send(self, *args: Unpack[_Ts], **kwargs: Any) -> None:\n        \"\"\"\n        Sends data to all registered receivers.\n        \"\"\"\n        if not self.frozen:\n            raise RuntimeError(\"Cannot send non-frozen signal.\")\n\n        for receiver in self:\n            await receiver(*args)"
+}

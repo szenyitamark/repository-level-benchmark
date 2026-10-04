@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/priority/src/priority/priority.py",
+  "original_source": "self._root_stream = Stream(stream_id=0, weight=1)\n        self._root_stream.active = False\n        self._streams = {0: self._root_stream}\n\n        if not isinstance(maximum_streams, int):\n            raise TypeError(\"maximum_streams must be an int.\")\n        if maximum_streams <= 0:\n            raise ValueError(\"maximum_streams must be a positive integer.\")\n        self._maximum_streams = maximum_streams",
+  "bug_injected_source": "self._root_stream = Stream(stream_id=0, weight=1)\n        self._root_stream.active = True\n        self._streams = {0: self._root_stream}\n\n        if not isinstance(maximum_streams, int):\n            raise TypeError(\"maximum_streams must be an int.\")\n        if maximum_streams <= 0:\n            raise ValueError(\"maximum_streams must be a positive integer.\")\n        self._maximum_streams = maximum_streams"
+}

@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/async-lru/async_lru/__init__.py",
+  "original_source": "def cache_invalidate(self, /, *args: Hashable, **kwargs: Any) -> bool:\n        if self.__key is not None:\n            key = self.__key(*args, **kwargs)\n        else:\n            key = _make_key(args, kwargs, self.__typed)\n\n        cache_item = self.__cache.pop(key, None)\n        if cache_item is None:\n            return False\n        else:\n            cache_item.cancel()\n            return True",
+  "bug_injected_source": "def cache_invalidate(self, /, *args: Hashable, **kwargs: Any) -> bool:\n        if self.__key is not None:\n            key = self.__key(*args, **kwargs)\n        else:\n            key = _make_key(args, kwargs, self.__typed)\n\n        cache_item = self.__cache.pop(key, None)\n        if cache_item is None:\n            return False\n        else:\n            return True"
+}

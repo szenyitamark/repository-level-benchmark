@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/priority/src/priority/priority.py",
+  "original_source": "if (len(self._streams) + 1) > self._maximum_streams:\n            raise TooManyStreamsError(\n                \"Refusing to insert %d streams into priority tree at once\"\n                % (self._maximum_streams + 1)\n            )",
+  "bug_injected_source": "if len(self._streams) > self._maximum_streams:\n            raise TooManyStreamsError(\n                \"Refusing to insert %d streams into priority tree at once\"\n                % (self._maximum_streams + 1)\n            )"
+}

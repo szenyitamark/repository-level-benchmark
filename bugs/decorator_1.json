@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/decorator/src/decorator/__init__.py",
+  "original_source": "def fun(*args, **kw):\n            if not kwsyntax:\n                args, kw = fix(args, kw, sig)\n            return caller(func, *(extras + args), **kw)",
+  "bug_injected_source": "def fun(*args, **kw):\n            if kwsyntax:\n                args, kw = fix(args, kw, sig)\n            return caller(func, *(extras + args), **kw)"
+}

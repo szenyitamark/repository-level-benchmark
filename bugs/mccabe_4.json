@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/mccabe/mccabe.py",
+  "original_source": "@classmethod\n    def parse_options(cls, options):\n        cls.max_complexity = int(options.max_complexity)",
+  "bug_injected_source": "@classmethod\n    def parse_options(cls, options):\n        cls.max_complexity = options.max_complexity"
+}

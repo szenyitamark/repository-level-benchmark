@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/async-lru/async_lru/__init__.py",
+  "original_source": "def cache_parameters(self) -> _CacheParameters:\n        return _CacheParameters(\n            maxsize=self.__maxsize,\n            typed=self.__typed,\n            tasks=len(self.__tasks),\n            closed=self.__closed,\n        )",
+  "bug_injected_source": "def cache_parameters(self) -> _CacheParameters:\n        return _CacheParameters(\n            maxsize=self.__maxsize,\n            typed=self.__typed,\n            tasks=len(self.__cache),\n            closed=self.__closed,\n        )"
+}

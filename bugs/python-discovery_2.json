@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/python-discovery/src/python_discovery/_py_info_collect.py",
+  "original_source": "self.tcl_lib, self.tk_lib = self._get_tcl_tk_libs()",
+  "bug_injected_source": "self.tcl_lib, self.tk_lib = self._get_tk_libs()"
+}

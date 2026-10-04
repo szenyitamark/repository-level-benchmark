@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/python-decouple/decouple.py",
+  "original_source": "def _cast_boolean(self, value):\n        \"\"\"\n        Helper to convert config values to boolean as ConfigParser do.\n        \"\"\"\n        value = str(value)\n        return bool(value) if value == '' else bool(strtobool(value))",
+  "bug_injected_source": "def _cast_boolean(self, value):\n        \"\"\"\n        Helper to convert config values to boolean as ConfigParser do.\n        \"\"\"\n        value = str(value)\n        return bool(strtobool(value)) if value == '' else bool(strtobool(value))"
+}

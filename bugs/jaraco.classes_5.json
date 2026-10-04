@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/jaraco.classes/jaraco/classes/ancestry.py",
+  "original_source": "return unique_everseen(_iter_all_subclasses(cls))",
+  "bug_injected_source": "return unique_everseen(_iter_all_subclasses(cls), key=type)"
+}

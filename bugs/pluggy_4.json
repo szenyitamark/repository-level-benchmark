@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/pluggy/src/pluggy/_tracing.py",
+  "original_source": "def _escape_surrogates(text: str) -> str:\n    \"\"\"Escape lone surrogates so the result survives any text writer.\n\n    A lone surrogate reaching the writer raises :exc:`UnicodeEncodeError`\n    inside the trace call for any utf-8 target, such as the file behind\n    pytest's ``--debug``.\n    \"\"\"\n    if text.isascii():\n        return text\n    return text.encode(\"utf-8\", \"backslashreplace\").decode(\"utf-8\")",
+  "bug_injected_source": "def _escape_surrogates(text: str) -> str:\n    \"\"\"Escape lone surrogates so the result survives any text writer.\n\n    A lone surrogate reaching the writer raises :exc:`UnicodeEncodeError`\n    inside the trace call for any utf-8 target, such as the file behind\n    pytest's ``--debug``.\n    \"\"\"\n    if text.isascii():\n        return text\n    return text.encode(\"utf-8\", \"strict\").decode(\"utf-8\")"
+}

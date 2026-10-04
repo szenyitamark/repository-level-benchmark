@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/hyperframe/src/hyperframe/frame.py",
+  "original_source": "def parse_body(self, data: memoryview) -> None:\n        if len(data) > 5:\n            msg = f\"PRIORITY must have 5 byte body: actual length {len(data)}.\"\n            raise InvalidFrameError(msg)\n\n        self.parse_priority_data(data)\n        self.body_len = 5",
+  "bug_injected_source": "def parse_body(self, data: memoryview) -> None:\n        if len(data) > 5:\n            msg = f\"PRIORITY must have 5 byte body: actual length {len(data)}.\"\n            raise InvalidFrameError(msg)\n\n        self.parse_priority_data(data)\n        self.body_len = 4"
+}

@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/sniffio/sniffio/_impl.py",
+  "original_source": "value = thread_local.name\n    if value is not None:\n        return value\n\n    value = current_async_library_cvar.get()\n    if value is not None:\n        return value",
+  "bug_injected_source": "value = thread_local.name\n    if value is not None:\n        return value\n\n    value = current_async_library_cvar.get()\n    if value is None:\n        return value"
+}

@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/async-lru/async_lru/__init__.py",
+  "original_source": "async def cache_close(self, *, wait: bool = False) -> None:\n        self.__closed = True\n\n        tasks = self.__tasks\n        if not tasks:\n            return\n\n        if not wait:\n            for task in tasks:\n                if not task.done():\n                    task.cancel()\n\n        await asyncio.gather(*tasks, return_exceptions=True)",
+  "bug_injected_source": "async def cache_close(self, *, wait: bool = False) -> None:\n        self.__closed = True\n\n        tasks = self.__tasks\n        if not tasks:\n            return\n\n        if wait:\n            for task in tasks:\n                if not task.done():\n                    task.cancel()\n\n        await asyncio.gather(*tasks, return_exceptions=True)"
+}

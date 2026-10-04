@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/async-lru/async_lru/__init__.py",
+  "original_source": "def cache_clear(self) -> None:\n        self.__hits = 0\n        self.__misses = 0\n\n        for c in self.__cache.values():\n            if c.later_call:\n                c.later_call.cancel()\n        self.__cache.clear()",
+  "bug_injected_source": "def cache_clear(self) -> None:\n        self.__hits = 0\n        self.__misses = 0\n\n        for c in self.__cache.values():\n            if c.later_call:\n                c.later_call.cancel()\n        self.__cache.clear()\n        self.__closed = True"
+}

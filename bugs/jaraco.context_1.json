@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/jaraco.context/jaraco/context/__init__.py",
+  "original_source": "def strip_first_component(\n    member: tarfile.TarInfo,\n    path: object,\n) -> tarfile.TarInfo:\n    _, member.name = member.name.split('/', 1)\n    return member\n\n\n_default_filter = _compose_tarfile_filters(tarfile.data_filter, strip_first_component)  # type: ignore[no-untyped-call]",
+  "bug_injected_source": "def strip_first_component(\n    member: tarfile.TarInfo,\n    path: object,\n) -> tarfile.TarInfo:\n    _, member.name = member.name.split('/', 1)\n    return member\n\n\n_default_filter = _compose_tarfile_filters(strip_first_component, tarfile.data_filter)  # type: ignore[no-untyped-call]"
+}

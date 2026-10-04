@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/jaraco.functools/jaraco/functools/__init__.py",
+  "original_source": "def retry_call(func, cleanup=lambda: None, retries=0, trap=()):\n    \"\"\"\n    Given a callable func, trap the indicated exceptions\n    for up to 'retries' times, invoking cleanup on the\n    exception. On the final attempt, allow any exceptions\n    to propagate.\n    \"\"\"\n    attempts = itertools.count() if retries == float('inf') else range(retries)\n    for _ in attempts:\n        try:\n            return func()\n        except trap:\n            cleanup()\n\n    return func()",
+  "bug_injected_source": "def retry_call(func, cleanup=lambda: None, retries=0, trap=()):\n    \"\"\"\n    Given a callable func, trap the indicated exceptions\n    for up to 'retries' times, invoking cleanup on the\n    exception. On the final attempt, allow any exceptions\n    to propagate.\n    \"\"\"\n    attempts = itertools.count() if retries == float('inf') else range(retries + 1)\n    for _ in attempts:\n        try:\n            return func()\n        except trap:\n            cleanup()\n\n    return func()"
+}

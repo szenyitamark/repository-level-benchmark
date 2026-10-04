@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/zipp/zipp/__init__.py",
+  "original_source": "def getinfo(self, name):\n        \"\"\"\n        Supplement getinfo for implied dirs.\n        \"\"\"\n        try:\n            return super().getinfo(name)\n        except KeyError:\n            if not name.endswith('/') or name not in self._name_set():\n                raise\n            return zipfile.ZipInfo(filename=name)",
+  "bug_injected_source": "def getinfo(self, name):\n        \"\"\"\n        Supplement getinfo for implied dirs.\n        \"\"\"\n        try:\n            return super().getinfo(name)\n        except KeyError:\n            if name.endswith('/') and name in self._name_set():\n                raise\n            return zipfile.ZipInfo(filename=name)"
+}

@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/jaraco.classes/jaraco/classes/meta.py",
+  "original_source": "def __init__(\n        cls,\n        name: str,\n        bases: tuple[type[object], ...],\n        attrs: dict[str, object],\n    ) -> None:\n        if not hasattr(cls, '_leaf_classes'):\n            cls._leaf_classes = set()\n        leaf_classes = getattr(cls, '_leaf_classes')\n        leaf_classes.add(cls)\n        # remove any base classes\n        leaf_classes -= set(bases)",
+  "bug_injected_source": "def __init__(\n        cls,\n        name: str,\n        bases: tuple[type[object], ...],\n        attrs: dict[str, object],\n    ) -> None:\n        if not hasattr(cls, '_leaf_classes'):\n            cls._leaf_classes = set()\n        leaf_classes = getattr(cls, '_leaf_classes')\n        leaf_classes.add(name)\n        # remove any base classes\n        leaf_classes -= set(bases)"
+}

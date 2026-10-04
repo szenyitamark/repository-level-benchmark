@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/outcome/src/outcome/_impl.py",
+  "original_source": "try:\n        return Value(sync_fn(*args, **kwargs))\n    except BaseException as exc:\n        exc = remove_tb_frames(exc, 1)\n        return Error(exc)",
+  "bug_injected_source": "try:\n        return Value(sync_fn(*args, **kwargs))\n    except BaseException as exc:\n        return Error(exc)"
+}

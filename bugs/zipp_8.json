@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/zipp/zipp/__init__.py",
+  "original_source": "def is_dir(self):\n        return not self.at or self.at.endswith(\"/\")",
+  "bug_injected_source": "def is_dir(self):\n        return not self.at or self.at.endswith(\".dir\")"
+}

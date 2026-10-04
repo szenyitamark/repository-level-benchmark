@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/python-decouple/decouple.py",
+  "original_source": "def strtobool(value):\n    if isinstance(value, bool):\n        return value\n    value = value.lower()\n\n    if value in TRUE_VALUES:\n        return True\n    elif value in FALSE_VALUES:\n        return False\n\n    raise ValueError(\"Invalid truth value: \" + value)",
+  "bug_injected_source": "def strtobool(value):\n    if isinstance(value, bool):\n        return value\n    value = str(value)\n\n    if value in TRUE_VALUES:\n        return True\n    elif value in FALSE_VALUES:\n        return False\n\n    raise ValueError(\"Invalid truth value: \" + value)"
+}

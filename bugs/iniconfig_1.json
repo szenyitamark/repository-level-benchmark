@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/iniconfig/src/iniconfig/_parse.py",
+  "original_source": "# Strip key name (always for backward compatibility, optionally with unicode awareness)\n        key_name = name.strip()\n\n        # Strip value\n        value = value.strip()\n        # Strip inline comments from values if requested (issue #55)\n        if strip_inline_comments:\n            for c in COMMENTCHARS:\n                value = value.split(c)[0].rstrip()\n\n        return key_name, value",
+  "bug_injected_source": "# Strip key name (always for backward compatibility, optionally with unicode awareness)\n        key_name = name.strip()\n\n        # Strip value\n        value = value.strip()\n        # Strip inline comments from values if requested (issue #55)\n        if strip_inline_comments:\n            for c in COMMENTCHARS:\n                value = value.split(c)[0]\n\n        return key_name, value"
+}

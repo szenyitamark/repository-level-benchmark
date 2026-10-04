@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/jaraco.classes/jaraco/classes/properties.py",
+  "original_source": "def __set__(self, owner: object, value: _T) -> None:\n        if not self.fset:\n            raise AttributeError(\"can't set attribute\")\n        if type(owner) is not classproperty.Meta:\n            owner = type(owner)\n        return self.fset.__get__(None, cast('type[object]', owner))(value)",
+  "bug_injected_source": "def __set__(self, owner: object, value: _T) -> None:\n        if not self.fset:\n            raise AttributeError(\"can't set attribute\")\n        if type(owner) is classproperty.Meta:\n            owner = type(owner)\n        return self.fset.__get__(None, cast('type[object]', owner))(value)"
+}

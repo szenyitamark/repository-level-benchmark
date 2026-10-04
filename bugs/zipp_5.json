@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/zipp/zipp/__init__.py",
+  "original_source": "def _is_child(self, path):\n        return posixpath.dirname(path.at.rstrip(\"/\")) == self.at.rstrip(\"/\")",
+  "bug_injected_source": "def _is_child(self, path):\n        return posixpath.dirname(path.at.rstrip(\"/\")) == self.at.rstrip"
+}

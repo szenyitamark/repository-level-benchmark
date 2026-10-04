@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/hyperframe/src/hyperframe/frame.py",
+  "original_source": "def parse_flags(self, flag_byte: int) -> Flags:\n        for flag, flag_bit in self.defined_flags:\n            if flag_byte & flag_bit:\n                self.flags.add(flag)\n\n        return self.flags",
+  "bug_injected_source": "def parse_flags(self, flag_byte: int) -> Flags:\n        for flag, flag_bit in self.defined_flags:\n            if flag_byte & flag_bit:\n                self.flags.discard(flag)\n\n        return self.flags"
+}

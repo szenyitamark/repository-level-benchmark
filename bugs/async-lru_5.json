@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/async-lru/async_lru/__init__.py",
+  "original_source": "if self.__maxsize is not None and len(self.__cache) > self.__maxsize:\n            dropped_key, dropped_cache_item = self.__cache.popitem(last=False)\n            dropped_cache_item.cancel()",
+  "bug_injected_source": "if self.__maxsize is not None and len(self.__cache) >= self.__maxsize:\n            dropped_key, dropped_cache_item = self.__cache.popitem(last=False)\n            dropped_cache_item.cancel()"
+}

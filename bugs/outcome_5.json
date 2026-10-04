@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/outcome/src/outcome/_impl.py",
+  "original_source": "def unwrap(self) -> ValueT:\n        self._set_unwrapped()\n        return self.value",
+  "bug_injected_source": "def unwrap(self) -> ValueT:\n        return self.value"
+}

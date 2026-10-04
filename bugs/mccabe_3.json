@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/mccabe/mccabe.py",
+  "original_source": "def complexity(self):\n        \"\"\" Return the McCabe complexity for the graph.\n            E-V+2\n        \"\"\"\n        num_edges = sum([len(n) for n in self.nodes.values()])\n        num_nodes = len(self.nodes)\n        return num_edges - num_nodes + 2",
+  "bug_injected_source": "def complexity(self):\n        \"\"\" Return the McCabe complexity for the graph.\n            E-V+2\n        \"\"\"\n        num_edges = sum([len(n) for n in self.nodes.values()])\n        num_nodes = len(self.nodes)\n        return num_nodes - num_edges + 2"
+}

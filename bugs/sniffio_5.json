@@ -1,0 +1,5 @@
+{
+  "file_path": "repositories/original/sniffio/sniffio/_impl.py",
+  "original_source": "value = current_async_library_cvar.get()\n    if value is not None:\n        return value\n\n    # Need to sniff for asyncio\n    if \"asyncio\" in sys.modules:",
+  "bug_injected_source": "value = current_async_library_cvar.get()\n    if value is not None:\n        return \"asyncio\"\n\n    # Need to sniff for asyncio\n    if \"asyncio\" in sys.modules:"
+}
