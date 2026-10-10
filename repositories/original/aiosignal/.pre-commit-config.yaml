@@ -1,0 +1,103 @@
+repos:
+- repo: local
+  hooks:
+  - id: check-changes
+    name: Check CHANGES
+    language: system
+    entry: ./tools/check_changes.py
+    pass_filenames: false
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v5.0.0
+  hooks:
+  - id: check-merge-conflict
+    exclude: rst$
+- repo: https://github.com/asottile/yesqa
+  rev: v1.5.0
+  hooks:
+  - id: yesqa
+- repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
+  rev: v2.15.0
+  hooks:
+  - id: pretty-format-yaml
+    alias: yaml
+    args: [--autofix, --indent, '2']
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v5.0.0
+  hooks:
+  - id: trailing-whitespace
+  - id: end-of-file-fixer
+  - id: fix-encoding-pragma
+    args: [--remove]
+  - id: file-contents-sorter
+    files: CONTRIBUTORS.txt
+  - id: check-case-conflict
+  - id: check-json
+  - id: check-xml
+  - id: check-yaml
+  - id: debug-statements
+- repo: https://github.com/PyCQA/flake8
+  rev: 7.3.0
+  hooks:
+  - id: flake8
+    language_version: python3
+- repo: https://github.com/pre-commit/pygrep-hooks
+  rev: v1.10.0
+  hooks:
+  - id: python-use-type-annotations
+- repo: https://github.com/rhysd/actionlint
+  rev: v1.7.7
+  hooks:
+  - id: actionlint-docker
+    args:
+    - -ignore
+    - 'SC2155:'
+    - -ignore
+    - 'SC2086:'
+    - -ignore
+    - 'SC1004:'
+- repo: https://github.com/python-jsonschema/check-jsonschema
+  rev: 0.33.1
+  hooks:
+  - id: check-github-actions
+
+- repo: https://github.com/pre-commit/mirrors-mypy.git
+  rev: v1.16.1
+  hooks:
+  - id: mypy
+    alias: mypy-py313
+    name: MyPy, for Python 3.13
+    additional_dependencies:
+    - frozenlist  # runtime dependency
+    - lxml  # dep of `--txt-report`, `--cobertura-xml-report` & `--html-report`
+    - pytest
+    args:
+    - --python-version=3.13
+    - --any-exprs-report=.tox/.tmp/.test-results/mypy--py-3.13
+    - --cobertura-xml-report=.tox/.tmp/.test-results/mypy--py-3.13
+    - --html-report=.tox/.tmp/.test-results/mypy--py-3.13
+    - --linecount-report=.tox/.tmp/.test-results/mypy--py-3.13
+    - --linecoverage-report=.tox/.tmp/.test-results/mypy--py-3.13
+    - --lineprecision-report=.tox/.tmp/.test-results/mypy--py-3.13
+    - --txt-report=.tox/.tmp/.test-results/mypy--py-3.13
+    pass_filenames: false
+  - id: mypy
+    alias: mypy-py311
+    name: MyPy, for Python 3.11
+    additional_dependencies:
+    - frozenlist  # runtime dependency
+    - lxml  # dep of `--txt-report`, `--cobertura-xml-report` & `--html-report`
+    - pytest
+    args:
+    - --python-version=3.11
+    - --any-exprs-report=.tox/.tmp/.test-results/mypy--py-3.11
+    - --cobertura-xml-report=.tox/.tmp/.test-results/mypy--py-3.11
+    - --html-report=.tox/.tmp/.test-results/mypy--py-3.11
+    - --linecount-report=.tox/.tmp/.test-results/mypy--py-3.11
+    - --linecoverage-report=.tox/.tmp/.test-results/mypy--py-3.11
+    - --lineprecision-report=.tox/.tmp/.test-results/mypy--py-3.11
+    - --txt-report=.tox/.tmp/.test-results/mypy--py-3.11
+    pass_filenames: false
+ci:
+  skip:
+  - actionlint-docker
+  - check-github-actions

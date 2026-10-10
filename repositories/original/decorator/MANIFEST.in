@@ -1,0 +1,4 @@
+include CHANGES.md performance.sh
+include src/decorator
+include tests/*.py
+graft docs

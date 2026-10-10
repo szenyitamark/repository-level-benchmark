@@ -1,0 +1,27 @@
+{
+  "files": [
+    ".coveragerc",
+    ".editorconfig",
+    ".github/FUNDING.yml",
+    ".github/workflows/main.yml",
+    ".pre-commit-config.yaml",
+    ".readthedocs.yaml",
+    "AGENTS.md",
+    "NEWS.rst",
+    "README.rst",
+    "SECURITY.md",
+    "conftest.py",
+    "docs/conf.py",
+    "docs/history.rst",
+    "docs/index.rst",
+    "jaraco/context/__init__.py",
+    "jaraco/context/py.typed",
+    "mypy.ini",
+    "pyproject.toml",
+    "pytest.ini",
+    "ruff.toml",
+    "tests/test_safety.py",
+    "towncrier.toml",
+    "tox.ini"
+  ]
+}

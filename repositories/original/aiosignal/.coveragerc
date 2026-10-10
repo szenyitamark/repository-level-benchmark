@@ -1,0 +1,22 @@
+[html]
+show_contexts = true
+skip_covered = false
+
+[paths]
+_site-packages-to-src-mapping =
+  .
+  */lib/pypy*/site-packages
+  */lib/python*/site-packages
+  *\Lib\site-packages
+
+[run]
+branch = true
+cover_pylib = false
+omit =
+  setup.py
+parallel = true
+relative_files = true
+source =
+  .
+source_pkgs =
+  aiosignal
