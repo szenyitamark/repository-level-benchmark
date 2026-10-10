@@ -102,21 +102,6 @@
     ]
   },
   {
-    "github_url": "https://github.com/tox-dev/platformdirs.git",
-    "path": "src/platformdirs",
-    "test_command": [
-      "-c",
-      "import sys; sys.path.insert(0, '..'); import pytest; raise SystemExit(pytest.main(['../../tests']))"
-    ],
-    "dependency_command": [
-      "-e",
-      ".",
-      "pytest",
-      "appdirs==1.4.4",
-      "pytest-mock"
-    ]
-  },
-  {
     "github_url": "https://github.com/tox-dev/python-discovery.git",
     "path": "src/python_discovery",
     "test_command": [
@@ -193,123 +178,6 @@
     ]
   },
   {
-    "github_url": "https://github.com/pallets/itsdangerous.git",
-    "path": "src/itsdangerous",
-    "test_command": [
-      "-c",
-      "import os; os.chdir('../..'); import pytest; raise SystemExit(pytest.main(['tests/test_itsdangerous']))"
-    ],
-    "dependency_command": [
-      "-e",
-      ".",
-      "pytest",
-      "freezegun"
-    ]
-  },
-  {
-    "github_url": "https://github.com/theskumar/python-dotenv.git",
-    "path": "src/dotenv",
-    "test_command": [
-      "-c",
-      "import os, sys; os.environ['PATH']=os.path.join(sys.prefix, 'bin')+os.pathsep+os.environ.get('PATH',''); import pytest; raise SystemExit(pytest.main([os.path.abspath('../../tests'), '-k', 'not test_run_with_command_flags and not test_is_interactive_main_module_not_found and not test_is_interactive_main_with_file and not test_is_interactive_main_module_with_file_attribute_none']))"
-    ],
-    "dependency_command": [
-      "-e",
-      ".[cli]",
-      "pytest"
-    ]
-  },
-  {
-    "github_url": "https://github.com/tox-dev/filelock.git",
-    "path": "src/filelock",
-    "test_command": [
-      "-c",
-      "import os; os.chdir('../..'); import pytest; raise SystemExit(pytest.main(['tests', '-o', 'filterwarnings=ignore::pytest.PytestWarning']))"
-    ],
-    "dependency_command": [
-      "-e",
-      ".",
-      "pytest",
-      "pytest-asyncio",
-      "pytest-cov",
-      "pytest-mock",
-      "pytest-randomly",
-      "pytest-timeout",
-      "virtualenv",
-      "covdefaults"
-    ]
-  },
-  {
-    "github_url": "https://github.com/python-hyper/hpack.git",
-    "path": "src/hpack",
-    "test_command": [
-      "-c",
-      "import os; os.chdir('../..'); import pytest; raise SystemExit(pytest.main(['tests']))"
-    ],
-    "dependency_command": [
-      "-e",
-      ".",
-      "pytest",
-      "pytest-cov",
-      "hypothesis"
-    ]
-  },
-  {
-    "github_url": "https://github.com/tkem/cachetools.git",
-    "path": "src/cachetools",
-    "test_command": [
-      "-c",
-      "import os; os.chdir('../..'); import pytest; raise SystemExit(pytest.main(['tests']))"
-    ],
-    "dependency_command": [
-      "-e",
-      ".",
-      "pytest",
-      "hypothesis"
-    ]
-  },
-  {
-    "github_url": "https://github.com/pypa/pyproject-hooks.git",
-    "path": "src/pyproject_hooks",
-    "test_command": [
-      "-c",
-      "import os; os.chdir('../..'); import pytest; raise SystemExit(pytest.main(['tests', '-o', 'filterwarnings=ignore::pytest.PytestWarning']))"
-    ],
-    "dependency_command": [
-      "-e",
-      ".",
-      "pytest",
-      "testpath",
-      "setuptools"
-    ]
-  },
-  {
-    "github_url": "https://github.com/pytest-dev/pytest-metadata.git",
-    "path": "src/pytest_metadata",
-    "test_command": [
-      "-c",
-      "import os; os.chdir('../..'); import pytest; raise SystemExit(pytest.main(['tests']))"
-    ],
-    "dependency_command": [
-      "-e",
-      ".",
-      "pytest"
-    ]
-  },
-  {
-    "github_url": "https://github.com/pytest-dev/pytest-env.git",
-    "path": "src/pytest_env",
-    "test_command": [
-      "-c",
-      "import os; os.chdir('../..'); import pytest; raise SystemExit(pytest.main(['tests']))"
-    ],
-    "dependency_command": [
-      "-e",
-      ".",
-      "pytest-mock"
-    ]
-  },
-  {
     "github_url": "https://github.com/HBNetwork/python-decouple.git",
     "path": "",
     "test_command": [
@@ -321,19 +189,6 @@
       ".",
       "pytest",
       "mock"
-    ]
-  },
-  {
-    "github_url": "https://github.com/PyCQA/pyflakes.git",
-    "path": "pyflakes",
-    "test_command": [
-      "-c",
-      "import os; os.chdir('..'); import pytest; raise SystemExit(pytest.main(['pyflakes/test']))"
-    ],
-    "dependency_command": [
-      "-e",
-      ".",
-      "pytest"
     ]
   },
   {
@@ -360,20 +215,6 @@
       "-e",
       ".",
       "pytest"
-    ]
-  },
-  {
-    "github_url": "https://github.com/nhairs/python-json-logger.git",
-    "path": "src/pythonjsonlogger",
-    "test_command": [
-      "-c",
-      "import os; os.chdir('../..'); import pytest; raise SystemExit(pytest.main(['tests']))"
-    ],
-    "dependency_command": [
-      "-e",
-      ".",
-      "pytest",
-      "freezegun"
     ]
   },
   {
@@ -418,52 +259,6 @@
       "pytest",
       "jaraco.test",
       "jaraco.classes"
-    ]
-  },
-  {
-    "github_url": "https://github.com/pallets/click.git",
-    "path": "src/click",
-    "test_command": [
-      "-c",
-      "import os; os.chdir('../..'); import pytest; raise SystemExit(pytest.main(['tests', '-o', 'filterwarnings=ignore::pytest.PytestWarning']))"
-    ],
-    "dependency_command": [
-      "-e",
-      ".",
-      "pytest"
-    ]
-  },
-  {
-    "github_url": "https://github.com/python-attrs/attrs.git",
-    "path": "src",
-    "test_command": [
-      "-c",
-      "import os; os.chdir('../..'); import pytest; raise SystemExit(pytest.main(['tests']))"
-    ],
-    "dependency_command": [
-      "-e",
-      ".",
-      "pytest",
-      "hypothesis",
-      "pympler",
-      "pytest-xdist",
-      "cloudpickle"
-    ]
-  },
-  {
-    "github_url": "https://github.com/pypa/packaging.git",
-    "path": "src/packaging",
-    "test_command": [
-      "-c",
-      "import os; os.chdir('../..'); import pytest; raise SystemExit(pytest.main(['tests']))"
-    ],
-    "dependency_command": [
-      "-e",
-      ".",
-      "pytest",
-      "hypothesis",
-      "pretend",
-      "tomli_w"
     ]
   }
 ]
