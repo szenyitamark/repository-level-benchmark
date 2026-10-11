@@ -13,10 +13,10 @@ A bug counts as fixed when its tests pass. With one attempt per bug, the
 aggregate score is **pass@1**: the share of cases fixed successfully on the
 first attempt.
 
-Before benchmarking, run `python setup_repositories.py` to create a virtual
-environment for each repository used by the bug cases and install its
-configured test dependencies. Environments are created locally; they are not
-bundled with the repository source.
+When `bench` runs, it will automatically create a virtual environment for
+each repository used by the bug cases and install its configured test
+dependencies. Environments are created locally; they are not bundled with the
+repository source.
 
 ## Model compatibility
 

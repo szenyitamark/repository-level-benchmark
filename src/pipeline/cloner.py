@@ -1,5 +1,6 @@
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 from src.models.repository import Repository
@@ -31,7 +32,7 @@ def setup_venvs(repositories: list[Repository]) -> None:
             continue
 
         subprocess.run(
-            ["python", "-m", "venv", repository.get_venv_path()],
+            [sys.executable, "-m", "venv", repository.get_venv_path()],
             check=True,
         )
 
@@ -40,3 +41,9 @@ def setup_venvs(repositories: list[Repository]) -> None:
             cwd=repository.get_original_root(),
             check=True,
         )
+
+
+def prepare_repositories() -> list[Repository]:
+    repositories = load_repositories()
+    setup_venvs(repositories)
+    return repositories
