@@ -13,7 +13,7 @@ class LlamaCpp(Provider):
         self.base_url = base_url.rstrip("/")
         self.api_key = api_key
 
-    def complete(self, prompt: str, timeout: int = 180) -> str:
+    def complete(self, prompt: str) -> str:
         body = json.dumps(
             {
                 "messages": [
@@ -38,6 +38,6 @@ class LlamaCpp(Provider):
             headers=headers,
             method="POST",
         )
-        with urllib.request.urlopen(request, timeout=timeout) as response:
+        with urllib.request.urlopen(request, timeout=self.timeout) as response:
             data = json.loads(response.read().decode("utf-8"))
         return data["choices"][0]["message"]["content"].strip() + "\n"

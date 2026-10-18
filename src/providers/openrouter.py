@@ -24,7 +24,7 @@ class OpenRouter(Provider):
         with urllib.request.urlopen(request, timeout=timeout):
             pass
 
-    def complete(self, prompt: str, timeout: int = 180) -> str:
+    def complete(self, prompt: str) -> str:
         body = json.dumps(
             {
                 "model": self.model,
@@ -53,7 +53,7 @@ class OpenRouter(Provider):
 
         for retry_number in range(5):
             try:
-                with urllib.request.urlopen(request, timeout=timeout) as response:
+                with urllib.request.urlopen(request, timeout=self.timeout) as response:
                     data = json.loads(response.read().decode("utf-8"))
                 break
             except urllib.error.HTTPError as error:
