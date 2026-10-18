@@ -1,9 +1,19 @@
 import json
+import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
 
 from src.models.repository import Repository
+from src.pipeline.mutator import copy_repository
+
+SOURCE_VERSIONS = {
+    "iniconfig": "2.3.1.dev7+g00e7d87c7",
+    "pluggy": "1.6.1.dev222+gf91048bed",
+    "python-discovery": "1.6.2.dev3+gb4eea32e5",
+    "pytest-repeat": "0.9.4",
+}
 
 
 def load_repositories() -> list[Repository]:
@@ -28,19 +38,34 @@ def load_repositories() -> list[Repository]:
 
 def setup_venvs(repositories: list[Repository]) -> None:
     for repository in repositories:
-        if repository.get_venv_path().exists():
+        copy_repository(repository)
+        venv_path = repository.get_venv_path()
+        setup_marker = venv_path / ".benchmark-setup-complete"
+        if setup_marker.exists():
             continue
 
-        subprocess.run(
-            [sys.executable, "-m", "venv", repository.get_venv_path()],
-            check=True,
-        )
+        if not venv_path.exists():
+            subprocess.run([sys.executable, "-m", "venv", venv_path], check=True)
 
-        subprocess.run(
-            [repository.get_pip_path(), "install", *repository.dependency_command],
-            cwd=repository.get_original_root(),
-            check=True,
-        )
+        environment = os.environ.copy()
+        if version := SOURCE_VERSIONS.get(repository.get_name()):
+            environment["SETUPTOOLS_SCM_PRETEND_VERSION"] = version
+
+        try:
+            subprocess.run(
+                [
+                    repository.get_pip_path(),
+                    "install",
+                    *repository.dependency_command,
+                ],
+                cwd=repository.get_mutation_root(),
+                check=True,
+                env=environment,
+            )
+            setup_marker.touch()
+        except subprocess.CalledProcessError:
+            shutil.rmtree(venv_path)
+            raise
 
 
 def prepare_repositories() -> list[Repository]:

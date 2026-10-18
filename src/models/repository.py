@@ -1,3 +1,4 @@
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -25,10 +26,14 @@ class Repository:
         return self.get_mutation_root() / self.path
 
     def get_venv_path(self) -> Path:
-        return self.get_original_root() / ".venv"
+        return self.get_mutation_root() / ".venv"
 
     def get_pip_path(self) -> Path:
-        return (self.get_venv_path() / "bin" / "pip").resolve()
+        scripts = "Scripts" if sys.platform == "win32" else "bin"
+        pip = "pip.exe" if sys.platform == "win32" else "pip"
+        return (self.get_venv_path() / scripts / pip).resolve()
 
     def get_python_path(self) -> Path:
-        return (self.get_venv_path() / "bin" / "python").absolute()
+        scripts = "Scripts" if sys.platform == "win32" else "bin"
+        python = "python.exe" if sys.platform == "win32" else "python"
+        return (self.get_venv_path() / scripts / python).absolute()
