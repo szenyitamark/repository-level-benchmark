@@ -2,7 +2,6 @@ import argparse
 import getpass
 import json
 import os
-import subprocess
 import sys
 import urllib.error
 from pathlib import Path
@@ -60,7 +59,9 @@ def main(argv: list[str] | None = None) -> int:
                     return 1
                 print("Invalid OpenRouter API key. Please try again.", file=sys.stderr)
             except OSError as error:
-                print(f"Could not validate OpenRouter API key: {error}", file=sys.stderr)
+                print(
+                    f"Could not validate OpenRouter API key: {error}", file=sys.stderr
+                )
                 return 1
             else:
                 break
@@ -77,7 +78,6 @@ def main(argv: list[str] | None = None) -> int:
         OSError,
         ValueError,
         json.JSONDecodeError,
-        subprocess.CalledProcessError,
     ) as error:
         print(f"Benchmark could not run: {error}", file=sys.stderr)
         return 1

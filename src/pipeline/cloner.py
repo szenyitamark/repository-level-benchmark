@@ -1,6 +1,5 @@
 import json
 import os
-import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -51,21 +50,17 @@ def setup_venvs(repositories: list[Repository]) -> None:
         if version := SOURCE_VERSIONS.get(repository.get_name()):
             environment["SETUPTOOLS_SCM_PRETEND_VERSION"] = version
 
-        try:
-            subprocess.run(
-                [
-                    repository.get_pip_path(),
-                    "install",
-                    *repository.dependency_command,
-                ],
-                cwd=repository.get_mutation_root(),
-                check=True,
-                env=environment,
-            )
-            setup_marker.touch()
-        except subprocess.CalledProcessError:
-            shutil.rmtree(venv_path)
-            raise
+        subprocess.run(
+            [
+                repository.get_pip_path(),
+                "install",
+                *repository.dependency_command,
+            ],
+            cwd=repository.get_mutation_root(),
+            check=True,
+            env=environment,
+        )
+        setup_marker.touch()
 
 
 def prepare_repositories() -> list[Repository]:
