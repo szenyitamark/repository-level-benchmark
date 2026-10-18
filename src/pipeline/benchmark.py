@@ -9,7 +9,7 @@ from src.pipeline.bugs import load_bug_cases
 from src.pipeline.cloner import prepare_repositories
 from src.pipeline.mutator import mutate
 from src.pipeline.tester import run_tests_mutated
-from src.providers.base import CompletionProvider
+from src.providers.provider import Provider
 
 EXCLUDED_DIRECTORIES = {
     ".git",
@@ -77,7 +77,7 @@ def apply_fixed_source(repository: Repository, bug: Bug, fixed_source: str) -> N
 
 
 def evaluate_case(
-    model: CompletionProvider,
+    model: Provider,
     repository: Repository,
     bug: Bug,
 ) -> CaseResult:
@@ -103,7 +103,7 @@ def evaluate_case(
 
 def run_benchmark(
     model_id: str,
-    model: CompletionProvider,
+    model: Provider,
     provider: str = "openrouter",
 ) -> dict[str, object]:
     repositories = prepare_repositories()

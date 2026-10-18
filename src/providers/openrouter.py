@@ -3,12 +3,14 @@ import time
 import urllib.error
 import urllib.request
 
+from src.providers.provider import Provider
+
 
 def _retry_delay(retry_number: int) -> float:
     return min(2**retry_number, 30)
 
 
-class OpenRouter:
+class OpenRouter(Provider):
     def __init__(self, api_key: str, model: str) -> None:
         self.api_key = api_key
         self.model = model

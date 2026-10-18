@@ -1,8 +1,10 @@
 import json
 import urllib.request
 
+from src.providers.provider import Provider
 
-class LlamaCpp:
+
+class LlamaCpp(Provider):
     def __init__(
         self,
         base_url: str,
