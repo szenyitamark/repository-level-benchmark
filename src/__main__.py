@@ -1,6 +1,5 @@
 import argparse
 import getpass
-import json
 import os
 import sys
 import urllib.error
@@ -23,7 +22,6 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--provider",
         choices=["openrouter", "llama-cpp"],
-        default="openrouter",
         help="model provider",
     )
     parser.add_argument(
@@ -38,13 +36,12 @@ def main(argv: list[str] | None = None) -> int:
             parser.error("--model is required for the openrouter provider")
         if arguments.base_url is not None:
             parser.error("--base-url can only be used with the llama-cpp provider")
-        model_id = arguments.model.strip()
+        model_name = arguments.model.strip()
         while True:
             api_key = getpass.getpass("OpenRouter API key: ").strip()
             if not api_key:
                 print("An OpenRouter API key is required.", file=sys.stderr)
-                return 2
-            model = OpenRouter(api_key, model_id)
+            model = OpenRouter(api_key, model_name)
             try:
                 model.validate_api_key()
             except urllib.error.HTTPError as error:
@@ -58,27 +55,16 @@ def main(argv: list[str] | None = None) -> int:
                     )
                     return 1
                 print("Invalid OpenRouter API key. Please try again.", file=sys.stderr)
-            except OSError as error:
-                print(
-                    f"Could not validate OpenRouter API key: {error}", file=sys.stderr
-                )
-                return 1
             else:
                 break
     else:
         if not arguments.base_url or not arguments.base_url.strip():
             parser.error("--base-url is required for the llama-cpp provider")
         base_url = arguments.base_url.strip().rstrip("/")
-        model_id = f"llama.cpp@{base_url}"
         model = LlamaCpp(base_url)
     try:
-        report = run_benchmark(model_id, model)
-    except (
-        KeyError,
-        OSError,
-        ValueError,
-        json.JSONDecodeError,
-    ) as error:
+        report = run_benchmark(model)
+    except Exception as error:
         print(f"Benchmark could not run: {error}", file=sys.stderr)
         return 1
 

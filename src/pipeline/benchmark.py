@@ -97,13 +97,16 @@ def evaluate_case(
 
 
 def run_benchmark(
-    model_id: str,
     model: Provider,
 ) -> dict[str, object]:
     if isinstance(model, OpenRouter):
         provider = "openrouter"
+        model_id = model.model
     elif isinstance(model, LlamaCpp):
         provider = "llama-cpp"
+        model_id = f"llama.cpp@{model.base_url}"
+    else:
+        raise TypeError(f"Unsupported provider type: {type(model).__name__}")
 
     repositories = prepare_repositories()
     repositories_by_name = {
