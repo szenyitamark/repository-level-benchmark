@@ -6,21 +6,9 @@ from src.models.repository import Repository
 
 
 def copy_repository(repository: Repository) -> None:
-    mutation_root = repository.get_mutation_root()
-    if mutation_root.exists():
-        for path in mutation_root.iterdir():
-            if path.name == ".venv":
-                continue
-            if path.is_dir() and not path.is_symlink():
-                shutil.rmtree(path)
-            else:
-                path.unlink()
-    else:
-        mutation_root.mkdir(parents=True)
-
     shutil.copytree(
         repository.get_original_root(),
-        mutation_root,
+        repository.get_mutation_root(),
         dirs_exist_ok=True,
         ignore=shutil.ignore_patterns(
             ".git",
