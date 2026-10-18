@@ -112,7 +112,7 @@ def run_benchmark(
     repositories_by_name = {
         repository.get_name(): repository for repository in repositories
     }
-    bugs = load_bug_cases(repositories)
+    bugs = load_bug_cases()
     results = []
 
     for bug in bugs:
