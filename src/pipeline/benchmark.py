@@ -104,7 +104,7 @@ def run_benchmark(
         model_id = model.model
     elif isinstance(model, LlamaCpp):
         provider = "llama-cpp"
-        model_id = f"llama.cpp@{model.base_url}"
+        model_id = "llama.cpp model"
     else:
         raise TypeError(f"Unsupported provider type: {type(model).__name__}")
 
