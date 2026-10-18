@@ -43,7 +43,7 @@ bench --provider llama-cpp --base-url http://127.0.0.1:8080/v1
 ```
 
 The benchmark requires the full llama.cpp API base URL and lets the server use
-its loaded model. If the server requires an API key, set `LLAMA_CPP_API_KEY`.
+its loaded model. The llama.cpp provider does not send authentication headers.
 
 ## Request handling
 

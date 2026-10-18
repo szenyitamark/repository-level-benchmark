@@ -70,7 +70,7 @@ def main(argv: list[str] | None = None) -> int:
             parser.error("--base-url is required for the llama-cpp provider")
         base_url = arguments.base_url.strip().rstrip("/")
         model_id = f"llama.cpp@{base_url}"
-        model = LlamaCpp(base_url, os.environ.get("LLAMA_CPP_API_KEY"))
+        model = LlamaCpp(base_url)
     try:
         report = run_benchmark(model_id, model, arguments.provider)
     except (
