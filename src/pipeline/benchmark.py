@@ -32,7 +32,6 @@ class CaseResult:
     case_id: str
     repository: str
     status: str
-    output: str
 
 
 def read_repository(repository: Repository) -> str:
@@ -91,8 +90,7 @@ def evaluate_case(
         return CaseResult(
             case_id=bug.case_id,
             repository=bug.repository_name,
-            status=test_result.status,
-            output=test_result.output,
+            status=test_result,
         )
     except Exception as error:
         return CaseResult(
