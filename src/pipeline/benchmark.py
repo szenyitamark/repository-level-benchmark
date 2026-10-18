@@ -5,6 +5,8 @@ from pathlib import Path
 
 from src.models.bug import Bug
 from src.models.case_result import CaseResult
+from src.models.llama_cpp import LlamaCpp
+from src.models.openrouter import OpenRouter
 from src.models.provider import Provider
 from src.models.repository import Repository
 from src.pipeline.bug_loader import load_bug_cases
@@ -86,20 +88,23 @@ def evaluate_case(
             repository=bug.repository_name,
             status=test_result,
         )
-    except Exception as error:
+    except Exception:
         return CaseResult(
             case_id=bug.case_id,
             repository=bug.repository_name,
             status="ERROR",
-            output=f"{type(error).__name__}: {error}",
         )
 
 
 def run_benchmark(
     model_id: str,
     model: Provider,
-    provider: str = "openrouter",
 ) -> dict[str, object]:
+    if isinstance(model, OpenRouter):
+        provider = "openrouter"
+    elif isinstance(model, LlamaCpp):
+        provider = "llama-cpp"
+
     repositories = prepare_repositories()
     repositories_by_name = {
         repository.get_name(): repository for repository in repositories
@@ -108,7 +113,11 @@ def run_benchmark(
     results = []
 
     for bug in bugs:
-        result = evaluate_case(model, repositories_by_name[bug.repository_name], bug)
+        result = evaluate_case(
+            model,
+            repositories_by_name[bug.repository_name],
+            bug,
+        )
         results.append(result)
         print(f"{bug.case_id}: {result.status}")
 

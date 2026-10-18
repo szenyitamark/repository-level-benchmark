@@ -72,7 +72,7 @@ def main(argv: list[str] | None = None) -> int:
         model_id = f"llama.cpp@{base_url}"
         model = LlamaCpp(base_url)
     try:
-        report = run_benchmark(model_id, model, arguments.provider)
+        report = run_benchmark(model_id, model)
     except (
         KeyError,
         OSError,
