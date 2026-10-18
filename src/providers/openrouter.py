@@ -6,10 +6,6 @@ import urllib.request
 from src.providers.provider import Provider
 
 
-def _retry_delay(retry_number: int) -> float:
-    return min(2**retry_number, 30)
-
-
 class OpenRouter(Provider):
     def __init__(self, api_key: str, model: str) -> None:
         self.api_key = api_key
@@ -51,17 +47,19 @@ class OpenRouter(Provider):
             method="POST",
         )
 
-        for retry_number in range(5):
+        retry_number = 1
+        while True:
             try:
                 with urllib.request.urlopen(request, timeout=self.timeout) as response:
                     data = json.loads(response.read().decode("utf-8"))
                 break
             except urllib.error.HTTPError as error:
-                if error.code != 429 or retry_number == 4:
+                if error.code != 429 or retry_number == 5:
                     raise
                 error.read()
-                delay = _retry_delay(retry_number)
+                delay = 2**retry_number
                 print(f"OpenRouter rate limited the request; retrying in {delay:g}s.")
                 time.sleep(delay)
+                retry_number += 1
 
         return data["choices"][0]["message"]["content"].strip() + "\n"
