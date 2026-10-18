@@ -1,15 +1,16 @@
 import json
-from dataclasses import asdict, dataclass
+from dataclasses import asdict
 from datetime import UTC, datetime
 from pathlib import Path
 
 from src.models.bug import Bug
+from src.models.case_result import CaseResult
+from src.models.provider import Provider
 from src.models.repository import Repository
 from src.pipeline.bugs import load_bug_cases
 from src.pipeline.cloner import prepare_repositories
 from src.pipeline.mutator import mutate
 from src.pipeline.tester import run_tests_mutated
-from src.providers.provider import Provider
 
 EXCLUDED_DIRECTORIES = {
     ".git",
@@ -25,13 +26,6 @@ EXCLUDED_DIRECTORIES = {
     "site-packages",
 }
 ROOT = Path(__file__).resolve().parents[2]
-
-
-@dataclass
-class CaseResult:
-    case_id: str
-    repository: str
-    status: str
 
 
 def read_repository(repository: Repository) -> str:

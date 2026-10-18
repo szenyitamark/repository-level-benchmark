@@ -1,7 +1,7 @@
 import json
 import urllib.request
 
-from src.providers.provider import Provider
+from src.models.provider import Provider
 
 
 class LlamaCpp(Provider):

@@ -3,7 +3,7 @@ import time
 import urllib.error
 import urllib.request
 
-from src.providers.provider import Provider
+from src.models.provider import Provider
 
 
 class OpenRouter(Provider):
@@ -57,7 +57,7 @@ class OpenRouter(Provider):
                 if error.code != 429 or retry_number == 5:
                     raise
                 error.read()
-                delay = 2**retry_number
+                delay = 2 ** (retry_number - 1)
                 print(f"OpenRouter rate limited the request; retrying in {delay:g}s.")
                 time.sleep(delay)
                 retry_number += 1

@@ -6,9 +6,9 @@ import sys
 import urllib.error
 from pathlib import Path
 
+from src.models.llama_cpp import LlamaCpp
+from src.models.openrouter import OpenRouter
 from src.pipeline.benchmark import run_benchmark
-from src.providers.llama_cpp import LlamaCpp
-from src.providers.openrouter import OpenRouter
 
 ROOT = Path(__file__).resolve().parents[1]
 
