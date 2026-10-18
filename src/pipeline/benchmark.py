@@ -3,11 +3,11 @@ from dataclasses import asdict
 from datetime import UTC, datetime
 from pathlib import Path
 
+from pipeline.bug_loader import load_bug_cases
 from src.models.bug import Bug
 from src.models.case_result import CaseResult
 from src.models.provider import Provider
 from src.models.repository import Repository
-from src.pipeline.bugs import load_bug_cases
 from src.pipeline.cloner import prepare_repositories
 from src.pipeline.mutator import mutate
 from src.pipeline.tester import run_tests_mutated
