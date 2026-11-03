@@ -33,9 +33,8 @@ repository source.
 
 ## Providers
 
-OpenRouter is selected with `--provider openrouter` and a model ID. A
-llama.cpp server can be used through its OpenAI-compatible chat-completions
-endpoint:
+OpenRouter is selected with `--provider openrouter` and a model ID. To use a
+local model, start a llama.cpp server and pass its API URL:
 
 ```sh
 llama-server --model /path/to/model.gguf --host 127.0.0.1 --port 8080
