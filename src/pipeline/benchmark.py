@@ -53,12 +53,39 @@ def build_prompt(bug: Bug, repository_content: str) -> str:
         Path("repositories/original") / bug.repository_name
     )
     return (
-        "This repository contains one single bug in the target file Inspect the repository context and fix "
-        "the bug in the target file. Return the complete corrected version of "
-        "the target file and nothing else. Do not include tests, explanations, or Markdown.\n\n"
+        "This repository contains one single bug in the target file. Inspect the repository context and fix "
+        "the bug in the target file.\n\n"
+        "Use exactly this response format:\n"
+        "Reasoning:\n"
+        "A concise explanation of the bug and the chosen fix.\n"
+        "Fix:\n"
+        "The complete corrected contents of the target file.\n\n"
         f"Target file: {target_path}\n\n"
         f"Repository context:\n{repository_content}"
     )
+
+
+def extract_fix(source: str) -> str:
+    lines = source.strip().splitlines()
+    fix_start = next(
+        (index + 1 for index, line in enumerate(lines) if line.strip() == "Fix:"),
+        None,
+    )
+    if fix_start is None:
+        raise ValueError("Model response is missing the required Fix: section")
+
+    fix_lines = lines[fix_start:]
+    if fix_lines and fix_lines[0].strip() == "":
+        fix_lines = fix_lines[1:]
+    fix_source = "\n".join(fix_lines).strip()
+    fence_lines = fix_source.splitlines()
+    if (
+        len(fence_lines) >= 2
+        and fence_lines[0].startswith("```")
+        and fence_lines[-1].strip() == "```"
+    ):
+        fix_source = "\n".join(fence_lines[1:-1]).strip()
+    return fix_source + "\n"
 
 
 def apply_fixed_source(repository: Repository, bug: Bug, fixed_source: str) -> None:
@@ -80,7 +107,7 @@ def evaluate_case(
     try:
         mutate(bug, repository)
         prompt = build_prompt(bug, read_repository(repository))
-        fixed_source = model.complete(prompt)
+        fixed_source = extract_fix(model.complete(prompt))
         apply_fixed_source(repository, bug, fixed_source)
         test_result = run_tests_mutated(repository)
         return CaseResult(

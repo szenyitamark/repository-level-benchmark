@@ -28,9 +28,10 @@ class OpenRouter(Provider):
                     {
                         "role": "system",
                         "content": (
-                            "Fix the bug in the target file. Return only the "
-                            "complete corrected target-file contents. Do not "
-                            "include Markdown fences or explanations."
+                            "Fix the bug in the target file. Respond using exactly "
+                            "these sections: Reasoning: followed by a concise explanation, "
+                            "then Fix: followed by the complete corrected target-file "
+                            "contents. The fix should include nothing but the exact code to be placed in the target file"
                         ),
                     },
                     {"role": "user", "content": prompt},
