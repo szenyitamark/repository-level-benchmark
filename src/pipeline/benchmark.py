@@ -1,4 +1,5 @@
 import json
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import asdict
 from datetime import UTC, datetime
 from pathlib import Path
@@ -125,7 +126,10 @@ def evaluate_case(
 
 def run_benchmark(
     model: Provider,
+    threads: int = 1,
 ) -> dict[str, object]:
+    if threads < 1:
+        raise ValueError("threads must be at least 1")
     if isinstance(model, OpenRouter):
         provider = "openrouter"
         model_id = model.model
@@ -142,14 +146,36 @@ def run_benchmark(
     bugs = load_bug_cases()
     results = []
 
-    for bug in bugs:
+    def evaluate_and_print(bug: Bug) -> CaseResult:
         result = evaluate_case(
             model,
             repositories_by_name[bug.repository_name],
             bug,
         )
-        results.append(result)
-        print(f"{bug.case_id}: {result.status}")
+        print(f"{bug.case_id}: {result.status}", flush=True)
+        return result
+
+    if threads == 1:
+        results = [evaluate_and_print(bug) for bug in bugs]
+    else:
+        # Each repository owns a shared mutation copy and virtual environment.
+        # Keep its cases in one worker so they cannot overwrite each other.
+        groups: dict[str, list[Bug]] = {}
+        for bug in bugs:
+            groups.setdefault(bug.repository_name, []).append(bug)
+
+        def evaluate_repository(cases: list[Bug]) -> list[CaseResult]:
+            return [evaluate_and_print(bug) for bug in cases]
+
+        with ThreadPoolExecutor(max_workers=threads) as executor:
+            futures = [
+                executor.submit(evaluate_repository, cases)
+                for cases in groups.values()
+            ]
+            for future in as_completed(futures):
+                results.extend(future.result())
+        case_order = {bug.case_id: index for index, bug in enumerate(bugs)}
+        results.sort(key=lambda result: case_order[result.case_id])
 
     passed = sum(result.status == "PASS" for result in results)
     failed = sum(result.status == "FAIL" for result in results)

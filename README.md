@@ -47,6 +47,15 @@ its loaded model. The llama.cpp provider does not send authentication headers.
 
 ## Request handling
 
-The benchmark processes cases sequentially. When OpenRouter rate limits a
+The benchmark processes cases sequentially by default (`--threads 1`). Pass
+`--threads N` to evaluate up to N repositories concurrently. Cases in the same
+repository stay sequential because they share working files and a virtual
+environment. Reports retain the original case order. Values below 1 are rejected.
+
+```sh
+bench --provider llama-cpp --base-url http://127.0.0.1:8080/v1 --threads 4
+```
+
+When OpenRouter rate limits a
 request, it retries up to five total attempts with exponential backoff, rather
 than counting each throttled attempt as a failed bug fix.

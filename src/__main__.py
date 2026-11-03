@@ -28,7 +28,15 @@ def main(argv: list[str] | None = None) -> int:
         "--base-url",
         help="llama.cpp API base URL, e.g. http://127.0.0.1:8080/v1",
     )
+    parser.add_argument(
+        "--threads",
+        type=int,
+        default=1,
+        help="concurrent repository workers (default: 1, sequential execution)",
+    )
     arguments = parser.parse_args(argv)
+    if arguments.threads < 1:
+        parser.error("--threads must be at least 1")
 
     os.chdir(ROOT)
     if arguments.provider == "openrouter":
@@ -63,7 +71,7 @@ def main(argv: list[str] | None = None) -> int:
         base_url = arguments.base_url.strip().rstrip("/")
         model = LlamaCpp(base_url)
     try:
-        report = run_benchmark(model)
+        report = run_benchmark(model, threads=arguments.threads)
     except Exception as error:
         print(f"Benchmark could not run: {error}", file=sys.stderr)
         return 1
