@@ -2,7 +2,7 @@
 
 ## Command
 
-The benchmark has one command: `bench`.
+The `bench` command runs the benchmark against a model of your choice.
 
 Run it from the benchmark project:
 
@@ -13,8 +13,8 @@ python -m pip install -e .
 bench --provider openrouter --model provider/model
 ```
 
-For OpenRouter, the command prompts for the API key without echoing it. The
-key is kept in memory for the run and is not written to reports.
+For OpenRouter, the command prompts for the API key without echoing it. The key
+is kept in memory for the run and is not written to reports.
 
 `bench` evaluates a selected model on the benchmark's bug cases. The model is
 given repository-level context from the bundled repositories, told which file
@@ -27,9 +27,9 @@ first attempt.
 
 When `bench` runs, it will automatically create a virtual environment inside
 each repository's mutation copy and install its configured test dependencies.
-The environment is preserved when that copy is refreshed for the next bug
-case. Environments are created locally; they are not bundled with the
-repository source.
+The environment is preserved when that copy is refreshed for the next bug case.
+Environments are created locally; they are not bundled with the repository
+source.
 
 ## Providers
 
@@ -49,12 +49,13 @@ its loaded model. The llama.cpp provider does not send authentication headers.
 The benchmark processes cases sequentially by default (`--threads 1`). Pass
 `--threads N` to evaluate up to N repositories concurrently. Cases in the same
 repository stay sequential because they share working files and a virtual
-environment. Reports retain the original case order. Values below 1 are rejected.
+environment. Reports retain the original case order. Values below 1 are
+rejected.
 
 ```sh
 bench --provider llama-cpp --base-url http://127.0.0.1:8080/v1 --threads 4
 ```
 
-When OpenRouter rate limits a
-request, it retries up to five total attempts with exponential backoff, rather
-than counting each throttled attempt as a failed bug fix.
+When OpenRouter rate limits a request, it retries up to five total attempts with
+exponential backoff, rather than counting each throttled attempt as a failed bug
+fix.
