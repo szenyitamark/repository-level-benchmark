@@ -4,8 +4,8 @@
 
 Before running the benchmark, prepare one of the following:
 
-- **OpenRouter:** create an account and an API key using the
-  [OpenRouter quickstart](https://openrouter.ai/docs/quickstart).
+- **OpenRouter:** sign up or sign in to OpenRouter, then create an API key on
+  the [API keys page](https://openrouter.ai/settings/keys).
 - **Local model:** install [llama.cpp](https://github.com/ggml-org/llama.cpp/blob/master/docs/install.md)
   (which provides `llama-server`) and download a GGUF model. See
   [Providers](#providers) for the server command.
