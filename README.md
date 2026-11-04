@@ -1,15 +1,28 @@
 # repository-level-benchmark
 
-## Command
+## Setup
 
-The `bench` command runs the benchmark against a model of your choice.
+Before running the benchmark, prepare one of the following:
 
-Run it from the benchmark project:
+- **OpenRouter:** create an account and an API key using the
+  [OpenRouter quickstart](https://openrouter.ai/docs/quickstart).
+- **Local model:** install [llama.cpp](https://github.com/ggml-org/llama.cpp/blob/master/docs/install.md)
+  (which provides `llama-server`) and download a GGUF model. See
+  [Providers](#providers) for the server command.
+
+Run these commands from the benchmark project:
 
 ```sh
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -e .
+```
+
+## Run the benchmark
+
+The `bench` command runs the benchmark against a model of your choice:
+
+```sh
 bench --provider openrouter --model provider/model
 ```
 
@@ -33,16 +46,67 @@ source.
 
 ## Providers
 
-OpenRouter is selected with `--provider openrouter` and a model ID. To use a
-local model, start a llama.cpp server and pass its API URL:
+### OpenRouter
+
+OpenRouter gives the benchmark access to remotely hosted models. You need an
+OpenRouter API key. Inference runs on the provider's servers.
+
+In a terminal opened in the benchmark project directory, activate the virtual
+environment created during setup:
+
+```sh
+source .venv/bin/activate
+```
+
+Then start the benchmark:
+
+```sh
+bench --provider openrouter --model provider/model
+```
+
+Replace `provider/model` with the model ID from the
+[OpenRouter model catalog](https://openrouter.ai/models). Enter your API key
+when prompted.
+
+### llama.cpp (local model)
+
+With llama.cpp, inference runs on your machine. Start the model server first,
+then run the benchmark in a separate terminal while the server stays running.
+
+**Terminal 1 — start the model server:**
 
 ```sh
 llama-server --model /path/to/model.gguf --host 127.0.0.1 --port 8080
+```
+
+Replace `/path/to/model.gguf` with the path to your downloaded GGUF model.
+The host `127.0.0.1` and port `8080` are example values. You can choose a
+different host or port, then use those same values in the benchmark's
+`--base-url` below.
+Wait until the server has loaded the model and is ready to accept requests.
+Leave this terminal open for the entire benchmark run.
+
+**Terminal 2 — run the benchmark:**
+
+Open another terminal in the benchmark project directory and activate the
+virtual environment created during setup:
+
+```sh
+source .venv/bin/activate
+```
+
+Then start the benchmark:
+
+```sh
 bench --provider llama-cpp --base-url http://127.0.0.1:8080/v1
 ```
 
 The benchmark requires the full llama.cpp API base URL and lets the server use
-its loaded model. The llama.cpp provider does not send authentication headers.
+its loaded model, so you do not need a `--model` argument or an OpenRouter API
+key. If you change the server's host or port, update `--base-url` to match,
+keeping the `/v1` suffix.
+
+When the benchmark finishes, you can stop the server with `Ctrl+C` in Terminal 1.
 
 ## Request handling
 
