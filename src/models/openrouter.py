@@ -20,6 +20,21 @@ class OpenRouter(Provider):
         with urllib.request.urlopen(request, timeout=timeout):
             pass
 
+    def validate_model(self, timeout: int = 30) -> None:
+        request = urllib.request.Request(
+            "https://openrouter.ai/api/v1/models",
+            headers={"Authorization": f"Bearer {self.api_key}"},
+            method="GET",
+        )
+        with urllib.request.urlopen(request, timeout=timeout) as response:
+            data = json.loads(response.read().decode("utf-8"))
+        if not any(model["id"] == self.model for model in data["data"]):
+            raise ValueError(
+                f"Unknown OpenRouter model '{self.model}'. "
+                "Choose a model ID from https://openrouter.ai/models "
+                "and pass it with --model."
+            )
+
     def complete(self, prompt: str) -> str:
         body = json.dumps(
             {

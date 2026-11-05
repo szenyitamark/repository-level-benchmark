@@ -71,6 +71,8 @@ def main(argv: list[str] | None = None) -> int:
         base_url = arguments.base_url.strip().rstrip("/")
         model = LlamaCpp(base_url)
     try:
+        if isinstance(model, OpenRouter):
+            model.validate_model()
         report = run_benchmark(model, threads=arguments.threads)
     except Exception as error:
         print(f"Benchmark could not run: {error}", file=sys.stderr)
