@@ -36,38 +36,65 @@ def load_repositories() -> list[Repository]:
 
 
 def setup_venvs(repositories: list[Repository]) -> None:
-    for repository in repositories:
-        copy_repository(repository)
-        venv_path = repository.get_venv_path()
-        setup_marker = venv_path / ".benchmark-setup-complete"
-        if setup_marker.exists():
-            continue
+    total = len(repositories)
+    if not total:
+        return
+    interactive = sys.stderr.isatty()
 
-        if not venv_path.exists():
+    def progress(completed: int, status: str) -> None:
+        filled = 20 * completed // total
+        bar = "#" * filled + "-" * (20 - filled)
+        message = f"Environment setup [{bar}] {completed}/{total}"
+        if status:
+            message += f" {status}"
+        if interactive:
+            print(f"\r\033[2K{message}", end="", file=sys.stderr, flush=True)
+        else:
+            print(message, file=sys.stderr, flush=True)
+
+    try:
+        for index, repository in enumerate(repositories):
+            progress(index, f"{repository.get_name()}: preparing")
+            copy_repository(repository)
+            venv_path = repository.get_venv_path()
+            setup_marker = venv_path / ".benchmark-setup-complete"
+            if setup_marker.exists():
+                progress(index + 1, f"{repository.get_name()}: ready (cached)")
+                continue
+
+            if not venv_path.exists():
+                progress(index, f"{repository.get_name()}: creating environment")
+                subprocess.run(
+                    [sys.executable, "-m", "venv", venv_path],
+                    check=True,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+
+            progress(index, f"{repository.get_name()}: installing dependencies")
+            environment = os.environ.copy()
+            if version := SOURCE_VERSIONS.get(repository.get_name()):
+                environment["SETUPTOOLS_SCM_PRETEND_VERSION"] = version
+
             subprocess.run(
-                [sys.executable, "-m", "venv", venv_path],
+                [
+                    repository.get_pip_path(),
+                    "install",
+                    *repository.dependency_command,
+                ],
+                cwd=repository.get_mutation_root(),
                 check=True,
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
+                env=environment,
             )
+            setup_marker.touch()
+            progress(index + 1, f"{repository.get_name()}: ready")
+        progress(total, "")
+    finally:
+        if interactive:
+            print(file=sys.stderr, flush=True)
 
-        environment = os.environ.copy()
-        if version := SOURCE_VERSIONS.get(repository.get_name()):
-            environment["SETUPTOOLS_SCM_PRETEND_VERSION"] = version
-
-        subprocess.run(
-            [
-                repository.get_pip_path(),
-                "install",
-                *repository.dependency_command,
-            ],
-            cwd=repository.get_mutation_root(),
-            check=True,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            env=environment,
-        )
-        setup_marker.touch()
 
 
 def prepare_repositories() -> list[Repository]:
