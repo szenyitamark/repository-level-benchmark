@@ -44,7 +44,12 @@ def setup_venvs(repositories: list[Repository]) -> None:
             continue
 
         if not venv_path.exists():
-            subprocess.run([sys.executable, "-m", "venv", venv_path], check=True)
+            subprocess.run(
+                [sys.executable, "-m", "venv", venv_path],
+                check=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
 
         environment = os.environ.copy()
         if version := SOURCE_VERSIONS.get(repository.get_name()):
@@ -58,6 +63,8 @@ def setup_venvs(repositories: list[Repository]) -> None:
             ],
             cwd=repository.get_mutation_root(),
             check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
             env=environment,
         )
         setup_marker.touch()
