@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -62,14 +63,15 @@ def setup_venvs(repositories: list[Repository]) -> None:
                 progress(index + 1, f"{repository.get_name()}: ready (cached)")
                 continue
 
-            if not venv_path.exists():
-                progress(index, f"{repository.get_name()}: creating environment")
-                subprocess.run(
-                    [sys.executable, "-m", "venv", venv_path],
-                    check=True,
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                )
+            if venv_path.exists():
+                shutil.rmtree(venv_path)
+            progress(index, f"{repository.get_name()}: creating environment")
+            subprocess.run(
+                [sys.executable, "-m", "venv", venv_path],
+                check=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
 
             progress(index, f"{repository.get_name()}: installing dependencies")
             environment = os.environ.copy()
@@ -94,7 +96,6 @@ def setup_venvs(repositories: list[Repository]) -> None:
     finally:
         if interactive:
             print(file=sys.stderr, flush=True)
-
 
 
 def prepare_repositories() -> list[Repository]:
