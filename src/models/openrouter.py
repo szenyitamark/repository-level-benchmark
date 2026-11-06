@@ -7,9 +7,10 @@ from src.models.provider import Provider
 
 
 class OpenRouter(Provider):
-    def __init__(self, api_key: str, model: str) -> None:
+    def __init__(self, api_key: str, model: str, max_tokens: int | None = None) -> None:
         self.api_key = api_key
         self.model = model
+        self.max_tokens = max_tokens
 
     def validate_api_key(self, timeout: int = 30) -> None:
         request = urllib.request.Request(
@@ -36,23 +37,24 @@ class OpenRouter(Provider):
             )
 
     def complete(self, prompt: str) -> str:
-        body = json.dumps(
-            {
-                "model": self.model,
-                "messages": [
-                    {
-                        "role": "system",
-                        "content": (
-                            "Fix the bug in the target file. Respond using exactly "
-                            "these sections: Reasoning: followed by a concise explanation, "
-                            "then Fix: followed by the complete corrected target-file "
-                            "contents. The fix should include nothing but the exact code to be placed in the target file"
-                        ),
-                    },
-                    {"role": "user", "content": prompt},
-                ],
-            }
-        ).encode("utf-8")
+        payload = {
+            "model": self.model,
+            "messages": [
+                {
+                    "role": "system",
+                    "content": (
+                        "Fix the bug in the target file. Respond using exactly "
+                        "these sections: Reasoning: followed by a concise explanation, "
+                        "then Fix: followed by the complete corrected target-file "
+                        "contents. The fix should include nothing but the exact code to be placed in the target file"
+                    ),
+                },
+                {"role": "user", "content": prompt},
+            ],
+        }
+        if self.max_tokens is not None:
+            payload["max_tokens"] = self.max_tokens
+        body = json.dumps(payload).encode("utf-8")
         request = urllib.request.Request(
             "https://openrouter.ai/api/v1/chat/completions",
             data=body,

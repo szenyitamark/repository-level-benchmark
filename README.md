@@ -6,7 +6,8 @@ Before running the benchmark, prepare one of the following:
 
 - **OpenRouter:** sign up or sign in to OpenRouter, then create an API key on
   the [API keys page](https://openrouter.ai/settings/keys).
-- **Local model:** install [llama.cpp](https://github.com/ggml-org/llama.cpp/blob/master/docs/install.md)
+- **Local model:** install
+  [llama.cpp](https://github.com/ggml-org/llama.cpp/blob/master/docs/install.md)
   (which provides `llama-server`) and download a GGUF model. See
   [Providers](#providers) for the server command.
 
@@ -64,9 +65,8 @@ Then start the benchmark:
 bench --provider openrouter --model provider/model
 ```
 
-Replace `provider/model` with the model ID from the
-[OpenRouter model catalog](https://openrouter.ai/models). Enter your API key
-when prompted.
+Replace `provider/model` with the model ID from the [OpenRouter model
+catalog](https://openrouter.ai/models). Enter your API key when prompted.
 
 ### llama.cpp (local model)
 
@@ -79,10 +79,9 @@ then run the benchmark in a separate terminal while the server stays running.
 llama-server --model /path/to/model.gguf --host 127.0.0.1 --port 8080
 ```
 
-Replace `/path/to/model.gguf` with the path to your downloaded GGUF model.
-The host `127.0.0.1` and port `8080` are example values. You can choose a
-different host or port, then use those same values in the benchmark's
-`--base-url` below.
+Replace `/path/to/model.gguf` with the path to your downloaded GGUF model. The
+host `127.0.0.1` and port `8080` are example values. You can choose a different
+host or port, then use those same values in the benchmark's `--base-url` below.
 Wait until the server has loaded the model and is ready to accept requests.
 Leave this terminal open for the entire benchmark run.
 
@@ -106,7 +105,47 @@ its loaded model, so you do not need a `--model` argument or an OpenRouter API
 key. If you change the server's host or port, update `--base-url` to match,
 keeping the `/v1` suffix.
 
-When the benchmark finishes, you can stop the server with `Ctrl+C` in Terminal 1.
+When the benchmark finishes, you can stop the server with `Ctrl+C` in Terminal
+1.
+
+## Output tokens and context size
+
+Use `--max-tokens` with either provider to cap the generated output per request:
+
+```sh
+bench --provider openrouter --model provider/model --max-tokens 4096
+```
+
+```sh
+bench --provider llama-cpp --base-url http://127.0.0.1:8080/v1 --max-tokens 4096
+```
+
+The value must be a positive integer. When omitted, the benchmark leaves the
+output limit to the provider or server. A low limit may cut off the corrected
+file before it is complete.
+
+The context window must accommodate both the repository prompt and generated
+output. `--max-tokens` does not increase that window or shorten the input
+prompt.
+
+For OpenRouter, choose a model with sufficient context and output capacity from
+the [model catalog](https://openrouter.ai/models). These limits are determined
+by the model and its provider. See the [OpenRouter token limit
+documentation](https://openrouter.ai/docs/api-reference/parameters#max-tokens).
+
+For llama.cpp, set the context size in the server terminal before starting the
+benchmark. For example:
+
+```sh
+llama-server --model /path/to/model.gguf --host 127.0.0.1 --port 8080 --ctx-size 32768
+```
+
+The largest prompt is estimated at 19,000–26,000 input tokens, depending on the
+model's tokenizer. The example context size of `32768` leaves room for generated
+output, but the required size depends on your output token limit. Choose a size
+supported by your model and available memory. See the
+[llama.cpp server documentation](https://github.com/ggml-org/llama.cpp/tree/master/tools/server)
+for available server options.
 
 ## Request handling
 

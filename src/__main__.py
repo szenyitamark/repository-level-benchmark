@@ -34,7 +34,14 @@ def main(argv: list[str] | None = None) -> int:
         default=1,
         help="concurrent repository workers (default: 1, sequential execution)",
     )
+    parser.add_argument(
+        "--max-tokens",
+        type=int,
+        help="maximum generated tokens per request (default: provider/server default)",
+    )
     arguments = parser.parse_args(argv)
+    if arguments.max_tokens is not None and arguments.max_tokens < 1:
+        parser.error("--max-tokens must be at least 1")
     if arguments.threads < 1:
         parser.error("--threads must be at least 1")
 
@@ -49,7 +56,7 @@ def main(argv: list[str] | None = None) -> int:
             api_key = getpass.getpass("OpenRouter API key: ").strip()
             if not api_key:
                 print("An OpenRouter API key is required.", file=sys.stderr)
-            model = OpenRouter(api_key, model_name)
+            model = OpenRouter(api_key, model_name, max_tokens=arguments.max_tokens)
             try:
                 model.validate_api_key()
             except urllib.error.HTTPError as error:
@@ -69,7 +76,7 @@ def main(argv: list[str] | None = None) -> int:
         if not arguments.base_url or not arguments.base_url.strip():
             parser.error("--base-url is required for the llama-cpp provider")
         base_url = arguments.base_url.strip().rstrip("/")
-        model = LlamaCpp(base_url)
+        model = LlamaCpp(base_url, max_tokens=arguments.max_tokens)
     try:
         if isinstance(model, OpenRouter):
             model.validate_model()

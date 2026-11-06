@@ -1,5 +1,0 @@
-{
-  "file_path": "repositories/original/pluggy/src/pluggy/_manager.py",
-  "original_source": "def _hookexec(\n        self,\n        hook_name: str,\n        methods: Sequence[HookImpl],\n        kwargs: Mapping[str, object],\n        firstresult: bool,\n    ) -> object | list[object]:\n        # called from all hookcaller instances.\n        # enable_tracing will set its own wrapping function at self._inner_hookexec\n        return self._inner_hookexec(hook_name, methods, kwargs, firstresult)",
-  "bug_injected_source": "def _hookexec(\n        self,\n        hook_name: str,\n        methods: Sequence[HookImpl],\n        kwargs: Mapping[str, object],\n        firstresult: bool,\n    ) -> object | list[object]:\n        # called from all hookcaller instances.\n        # enable_tracing will set its own wrapping function at self._inner_hookexec\n        return self._inner_hookexec(hook_name, methods, kwargs, not firstresult)"
-}
