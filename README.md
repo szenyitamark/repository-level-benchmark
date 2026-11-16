@@ -35,6 +35,10 @@ given repository-level context from the bundled repositories, told which file
 contains a bug, and asked to return the corrected target file. The benchmark
 replaces that file, runs the tests, and saves per-bug results.
 
+Errors are recorded with a specific status such as `RATE_LIMITING_ERROR`,
+`REQUEST_TIMEOUT`, or `RESPONSE_ERROR`. The report includes the exception type
+and message, including the provider's error response when available.
+
 A bug counts as fixed when its tests pass. With one attempt per bug, the
 aggregate score is **pass@1**: the share of cases fixed successfully on the
 first attempt.

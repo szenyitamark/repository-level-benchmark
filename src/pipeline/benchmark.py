@@ -1,4 +1,5 @@
 import json
+import urllib.error
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import asdict
 from datetime import UTC, datetime
@@ -105,22 +106,57 @@ def evaluate_case(
     repository: Repository,
     bug: Bug,
 ) -> CaseResult:
+    stage = "PREPARATION"
     try:
         mutate(bug, repository)
         prompt = build_prompt(bug, read_repository(repository))
-        fixed_source = extract_fix(model.complete(prompt))
+        stage = "REQUEST"
+        response = model.complete(prompt)
+        stage = "RESPONSE"
+        fixed_source = extract_fix(response)
+        if not fixed_source.strip():
+            raise ValueError("Model returned empty target-file source")
+        stage = "WRITE_FIX"
         apply_fixed_source(repository, bug, fixed_source)
+        stage = "TEST"
         test_result = run_tests_mutated(repository)
         return CaseResult(
             case_id=bug.case_id,
             repository=bug.repository_name,
             status=test_result,
         )
-    except Exception:
+    except Exception as error:
+        status = f"{stage}_ERROR"
+        message = str(error)
+        if isinstance(error, urllib.error.HTTPError):
+            if error.code == 429:
+                status = "RATE_LIMITING_ERROR"
+            else:
+                status = f"{stage}_HTTP_{error.code}"
+            try:
+                body = error.read().decode("utf-8", errors="replace")
+                if body:
+                    message += f": {body}"
+            except OSError:
+                pass
+            finally:
+                error.close()
+        elif isinstance(error, TimeoutError):
+            status = f"{stage}_TIMEOUT"
+        elif isinstance(error, urllib.error.URLError):
+            if isinstance(error.reason, TimeoutError):
+                status = f"{stage}_TIMEOUT"
+            else:
+                status = f"{stage}_CONNECTION_ERROR"
+        api_key = getattr(model, "api_key", None)
+        if api_key:
+            message = message.replace(api_key, "[REDACTED]")
         return CaseResult(
             case_id=bug.case_id,
             repository=bug.repository_name,
-            status="ERROR",
+            status=status,
+            error_type=type(error).__name__,
+            error_message=message,
         )
 
 
@@ -158,8 +194,6 @@ def run_benchmark(
     if threads == 1:
         results = [evaluate_and_print(bug) for bug in bugs]
     else:
-        # Each repository owns a shared mutation copy and virtual environment.
-        # Keep its cases in one worker so they cannot overwrite each other.
         groups: dict[str, list[Bug]] = {}
         for bug in bugs:
             groups.setdefault(bug.repository_name, []).append(bug)
@@ -169,8 +203,7 @@ def run_benchmark(
 
         with ThreadPoolExecutor(max_workers=threads) as executor:
             futures = [
-                executor.submit(evaluate_repository, cases)
-                for cases in groups.values()
+                executor.submit(evaluate_repository, cases) for cases in groups.values()
             ]
             for future in as_completed(futures):
                 results.extend(future.result())
@@ -179,7 +212,7 @@ def run_benchmark(
 
     passed = sum(result.status == "PASS" for result in results)
     failed = sum(result.status == "FAIL" for result in results)
-    errors = sum(result.status == "ERROR" for result in results)
+    errors = sum(result.status not in {"PASS", "FAIL"} for result in results)
     complete = len(results) == len(bugs)
     report = {
         "created_at": datetime.now(UTC).isoformat(),
