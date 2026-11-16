@@ -68,7 +68,7 @@ class OpenRouter(Provider):
         retry_number = 1
         while True:
             try:
-                with urllib.request.urlopen(request, timeout=self.timeout) as response:
+                with urllib.request.urlopen(request, timeout=None) as response:
                     data = json.loads(response.read().decode("utf-8"))
                 break
             except urllib.error.HTTPError as error:
