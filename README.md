@@ -35,6 +35,14 @@ given repository-level context from the bundled repositories, told which file
 contains a bug, and asked to return the corrected target file. The benchmark
 replaces that file, runs the tests, and saves per-bug results.
 
+Pass `--no-target-file` to make the model identify the buggy file itself.
+The file and its path are included in the repository context alongside the
+other files. The model returns a repository-relative `File:` path and the
+complete corrected contents under `Fix:`. A wrong path is recorded as
+`LOCALIZATION_ERROR`. For a correct path, the benchmark applies the fix to the mutation copy
+and runs the tests. The JSON report records whether the prompt explicitly
+identified the target as `reveal_bug_file`.
+
 Errors are recorded with a specific status such as `RATE_LIMITING_ERROR`,
 `REQUEST_TIMEOUT`, or `RESPONSE_ERROR`. The report includes the exception type
 and message, including the provider's error response when available.

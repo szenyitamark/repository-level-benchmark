@@ -50,7 +50,22 @@ def read_repository(repository: Repository) -> str:
     return "\n\n".join(sections)
 
 
-def build_prompt(bug: Bug, repository_content: str) -> str:
+def build_prompt(
+    bug: Bug, repository_content: str, reveal_bug_file: bool = True
+) -> str:
+    if not reveal_bug_file:
+        return (
+            "This repository contains one bug. Inspect the repository context, identify "
+            "the buggy Python file, and provide its complete corrected contents.\n\n"
+            "Use exactly this response format:\n"
+            "File: path/to/file.py\n"
+            "Reasoning:\n"
+            "A concise explanation of the bug and the chosen fix.\n"
+            "Fix:\n"
+            "The complete corrected contents of the identified file.\n\n"
+            f"Repository context:\n{repository_content}"
+        )
+
     target_path = bug.file_path.relative_to(
         Path("repositories/original") / bug.repository_name
     )
@@ -90,12 +105,20 @@ def extract_fix(source: str) -> str:
     return fix_source + "\n"
 
 
-def apply_fixed_source(repository: Repository, bug: Bug, fixed_source: str) -> None:
-    target = (
-        ROOT
-        / repository.get_mutation_root()
-        / bug.file_path.relative_to(repository.get_original_root())
-    ).resolve()
+def apply_fixed_source(
+    repository: Repository,
+    bug: Bug,
+    fixed_source: str,
+    reported_path: Path | None = None,
+) -> None:
+    if reported_path is None:
+        reported_path = bug.file_path.relative_to(repository.get_original_root())
+    mutation_root = (ROOT / repository.get_mutation_root()).resolve()
+    target = (mutation_root / reported_path).resolve()
+    if not target.is_relative_to(mutation_root) or not target.is_file():
+        raise ValueError(
+            "Fix target must be an existing file within the mutation repository"
+        )
     if not fixed_source.strip():
         raise ValueError("Model returned empty target-file source")
     target.write_text(fixed_source, encoding="utf-8")
@@ -105,19 +128,45 @@ def evaluate_case(
     model: Provider,
     repository: Repository,
     bug: Bug,
+    reveal_bug_file: bool = True,
 ) -> CaseResult:
     stage = "PREPARATION"
     try:
         mutate(bug, repository)
-        prompt = build_prompt(bug, read_repository(repository))
+        prompt = build_prompt(
+            bug,
+            read_repository(repository),
+            reveal_bug_file,
+        )
         stage = "REQUEST"
         response = model.complete(prompt)
         stage = "RESPONSE"
         fixed_source = extract_fix(response)
         if not fixed_source.strip():
             raise ValueError("Model returned empty target-file source")
+        reported_path = None
+        if not reveal_bug_file:
+            file_headers = []
+            for line in response.splitlines():
+                line = line.strip()
+                if line == "Fix:":
+                    break
+                if line.startswith("File:"):
+                    file_headers.append(line.removeprefix("File:").strip())
+            if len(file_headers) != 1 or not file_headers[0]:
+                raise ValueError(
+                    "Model response must include one File: path before Fix:"
+                )
+            reported_path = Path(file_headers[0])
+            expected_path = bug.file_path.relative_to(repository.get_original_root())
+            if reported_path != expected_path:
+                return CaseResult(
+                    case_id=bug.case_id,
+                    repository=bug.repository_name,
+                    status="LOCALIZATION_ERROR",
+                )
         stage = "WRITE_FIX"
-        apply_fixed_source(repository, bug, fixed_source)
+        apply_fixed_source(repository, bug, fixed_source, reported_path=reported_path)
         stage = "TEST"
         test_result = run_tests_mutated(repository)
         return CaseResult(
@@ -163,6 +212,7 @@ def evaluate_case(
 def run_benchmark(
     model: Provider,
     threads: int = 1,
+    reveal_bug_file: bool = True,
 ) -> dict[str, object]:
     if threads < 1:
         raise ValueError("threads must be at least 1")
@@ -187,6 +237,7 @@ def run_benchmark(
             model,
             repositories_by_name[bug.repository_name],
             bug,
+            reveal_bug_file,
         )
         print(f"{bug.case_id}: {result.status}", flush=True)
         return result
@@ -218,6 +269,7 @@ def run_benchmark(
         "created_at": datetime.now(UTC).isoformat(),
         "provider": provider,
         "model": model_id,
+        "reveal_bug_file": reveal_bug_file,
         "complete": complete,
         "summary": {
             "passed": passed,

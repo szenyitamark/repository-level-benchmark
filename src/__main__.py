@@ -39,6 +39,12 @@ def main(argv: list[str] | None = None) -> int:
         type=int,
         help="maximum generated tokens per request (default: provider/server default)",
     )
+    parser.add_argument(
+        "--no-target-file",
+        dest="reveal_bug_file",
+        action="store_false",
+        help="include the buggy file in context without identifying it as the target",
+    )
     arguments = parser.parse_args(argv)
     if arguments.max_tokens is not None and arguments.max_tokens < 1:
         parser.error("--max-tokens must be at least 1")
@@ -80,7 +86,9 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if isinstance(model, OpenRouter):
             model.validate_model()
-        report = run_benchmark(model, threads=arguments.threads)
+        report = run_benchmark(
+            model, threads=arguments.threads, reveal_bug_file=arguments.reveal_bug_file
+        )
     except Exception as error:
         print(f"Benchmark could not run: {error}", file=sys.stderr)
         return 1
