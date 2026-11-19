@@ -1,0 +1,420 @@
+{
+  "created_at": "2026-11-19T06:37:45.424308+00:00",
+  "provider": "openrouter",
+  "model": "recursive/flint-v1.0:free",
+  "complete": true,
+  "summary": {
+    "passed": 52,
+    "failed": 26,
+    "errors": 2,
+    "attempted": 80,
+    "total": 80,
+    "pass@1_percent": 65.0
+  },
+  "results": [
+    {
+      "case_id": "aiosignal_1",
+      "repository": "aiosignal",
+      "status": "PASS"
+    },
+    {
+      "case_id": "aiosignal_2",
+      "repository": "aiosignal",
+      "status": "PASS"
+    },
+    {
+      "case_id": "async-lru_1",
+      "repository": "async-lru",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "async-lru_2",
+      "repository": "async-lru",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "async-lru_3",
+      "repository": "async-lru",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "async-lru_4",
+      "repository": "async-lru",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "async-lru_5",
+      "repository": "async-lru",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "async-lru_6",
+      "repository": "async-lru",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "async-lru_7",
+      "repository": "async-lru",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "async-lru_8",
+      "repository": "async-lru",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "hyperframe_1",
+      "repository": "hyperframe",
+      "status": "PASS"
+    },
+    {
+      "case_id": "hyperframe_2",
+      "repository": "hyperframe",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "hyperframe_3",
+      "repository": "hyperframe",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "hyperframe_4",
+      "repository": "hyperframe",
+      "status": "PASS"
+    },
+    {
+      "case_id": "hyperframe_5",
+      "repository": "hyperframe",
+      "status": "PASS"
+    },
+    {
+      "case_id": "hyperframe_6",
+      "repository": "hyperframe",
+      "status": "PASS"
+    },
+    {
+      "case_id": "iniconfig_1",
+      "repository": "iniconfig",
+      "status": "REQUEST_ERROR",
+      "error_type": "AttributeError",
+      "error_message": "'NoneType' object has no attribute 'strip'"
+    },
+    {
+      "case_id": "iniconfig_2",
+      "repository": "iniconfig",
+      "status": "PASS"
+    },
+    {
+      "case_id": "iniconfig_3",
+      "repository": "iniconfig",
+      "status": "PASS"
+    },
+    {
+      "case_id": "iniconfig_4",
+      "repository": "iniconfig",
+      "status": "PASS"
+    },
+    {
+      "case_id": "iniconfig_5",
+      "repository": "iniconfig",
+      "status": "PASS"
+    },
+    {
+      "case_id": "iniconfig_6",
+      "repository": "iniconfig",
+      "status": "PASS"
+    },
+    {
+      "case_id": "iniconfig_7",
+      "repository": "iniconfig",
+      "status": "PASS"
+    },
+    {
+      "case_id": "jaraco.classes_1",
+      "repository": "jaraco.classes",
+      "status": "PASS"
+    },
+    {
+      "case_id": "jaraco.classes_2",
+      "repository": "jaraco.classes",
+      "status": "PASS"
+    },
+    {
+      "case_id": "jaraco.classes_3",
+      "repository": "jaraco.classes",
+      "status": "PASS"
+    },
+    {
+      "case_id": "jaraco.classes_4",
+      "repository": "jaraco.classes",
+      "status": "PASS"
+    },
+    {
+      "case_id": "jaraco.classes_5",
+      "repository": "jaraco.classes",
+      "status": "PASS"
+    },
+    {
+      "case_id": "jaraco.context_1",
+      "repository": "jaraco.context",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "jaraco.context_2",
+      "repository": "jaraco.context",
+      "status": "PASS"
+    },
+    {
+      "case_id": "jaraco.functools_1",
+      "repository": "jaraco.functools",
+      "status": "PASS"
+    },
+    {
+      "case_id": "mccabe_1",
+      "repository": "mccabe",
+      "status": "PASS"
+    },
+    {
+      "case_id": "mccabe_2",
+      "repository": "mccabe",
+      "status": "PASS"
+    },
+    {
+      "case_id": "mccabe_3",
+      "repository": "mccabe",
+      "status": "PASS"
+    },
+    {
+      "case_id": "mccabe_4",
+      "repository": "mccabe",
+      "status": "PASS"
+    },
+    {
+      "case_id": "outcome_1",
+      "repository": "outcome",
+      "status": "PASS"
+    },
+    {
+      "case_id": "outcome_2",
+      "repository": "outcome",
+      "status": "PASS"
+    },
+    {
+      "case_id": "outcome_3",
+      "repository": "outcome",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "outcome_4",
+      "repository": "outcome",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "outcome_5",
+      "repository": "outcome",
+      "status": "PASS"
+    },
+    {
+      "case_id": "outcome_6",
+      "repository": "outcome",
+      "status": "PASS"
+    },
+    {
+      "case_id": "outcome_7",
+      "repository": "outcome",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "outcome_8",
+      "repository": "outcome",
+      "status": "PASS"
+    },
+    {
+      "case_id": "outcome_9",
+      "repository": "outcome",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "priority_1",
+      "repository": "priority",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "priority_2",
+      "repository": "priority",
+      "status": "PASS"
+    },
+    {
+      "case_id": "priority_3",
+      "repository": "priority",
+      "status": "PASS"
+    },
+    {
+      "case_id": "priority_4",
+      "repository": "priority",
+      "status": "PASS"
+    },
+    {
+      "case_id": "priority_5",
+      "repository": "priority",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "priority_6",
+      "repository": "priority",
+      "status": "PASS"
+    },
+    {
+      "case_id": "priority_7",
+      "repository": "priority",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "pytest-repeat_1",
+      "repository": "pytest-repeat",
+      "status": "PASS"
+    },
+    {
+      "case_id": "pytest-repeat_10",
+      "repository": "pytest-repeat",
+      "status": "REQUEST_ERROR",
+      "error_type": "AttributeError",
+      "error_message": "'NoneType' object has no attribute 'strip'"
+    },
+    {
+      "case_id": "pytest-repeat_2",
+      "repository": "pytest-repeat",
+      "status": "PASS"
+    },
+    {
+      "case_id": "pytest-repeat_3",
+      "repository": "pytest-repeat",
+      "status": "PASS"
+    },
+    {
+      "case_id": "pytest-repeat_4",
+      "repository": "pytest-repeat",
+      "status": "PASS"
+    },
+    {
+      "case_id": "pytest-repeat_5",
+      "repository": "pytest-repeat",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "pytest-repeat_6",
+      "repository": "pytest-repeat",
+      "status": "PASS"
+    },
+    {
+      "case_id": "pytest-repeat_7",
+      "repository": "pytest-repeat",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "pytest-repeat_8",
+      "repository": "pytest-repeat",
+      "status": "PASS"
+    },
+    {
+      "case_id": "pytest-repeat_9",
+      "repository": "pytest-repeat",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "python-decouple_1",
+      "repository": "python-decouple",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "python-decouple_2",
+      "repository": "python-decouple",
+      "status": "PASS"
+    },
+    {
+      "case_id": "python-decouple_3",
+      "repository": "python-decouple",
+      "status": "PASS"
+    },
+    {
+      "case_id": "python-decouple_4",
+      "repository": "python-decouple",
+      "status": "PASS"
+    },
+    {
+      "case_id": "python-decouple_5",
+      "repository": "python-decouple",
+      "status": "PASS"
+    },
+    {
+      "case_id": "sniffio_1",
+      "repository": "sniffio",
+      "status": "PASS"
+    },
+    {
+      "case_id": "sniffio_2",
+      "repository": "sniffio",
+      "status": "PASS"
+    },
+    {
+      "case_id": "sniffio_3",
+      "repository": "sniffio",
+      "status": "PASS"
+    },
+    {
+      "case_id": "sniffio_4",
+      "repository": "sniffio",
+      "status": "PASS"
+    },
+    {
+      "case_id": "sniffio_5",
+      "repository": "sniffio",
+      "status": "PASS"
+    },
+    {
+      "case_id": "sniffio_6",
+      "repository": "sniffio",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "zipp_1",
+      "repository": "zipp",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "zipp_2",
+      "repository": "zipp",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "zipp_3",
+      "repository": "zipp",
+      "status": "PASS"
+    },
+    {
+      "case_id": "zipp_4",
+      "repository": "zipp",
+      "status": "FAIL"
+    },
+    {
+      "case_id": "zipp_5",
+      "repository": "zipp",
+      "status": "PASS"
+    },
+    {
+      "case_id": "zipp_6",
+      "repository": "zipp",
+      "status": "PASS"
+    },
+    {
+      "case_id": "zipp_7",
+      "repository": "zipp",
+      "status": "PASS"
+    },
+    {
+      "case_id": "zipp_8",
+      "repository": "zipp",
+      "status": "PASS"
+    }
+  ]
+}
